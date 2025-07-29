@@ -16,12 +16,12 @@ public class CreditApplicationService(
     private const decimal UnemploymentRate = 0.043M;
     private const decimal InflationRate = 0.0123M;
 
-    public LoanQuote Evaluate(decimal requestedAmount, int termInMonths, string customerTin)
+    public async Task<LoanQuote> Evaluate(decimal requestedAmount, int termInMonths, string customerTin)
     {
         var unemploymentRate = new UnemploymentRate(UnemploymentRate);
         var inflationRate = new InflationRate(InflationRate);
         var customer = customerService.GetCustomer(customerTin);
-        var creditLimit = creditLimitService.GetLimit(customer.MonthlyIncome);
+        var creditLimit = await creditLimitService.GetLimit(customer.MonthlyIncome);
         var customerCreditHistory = creditEligibilityEvaluator.EvaluateCustomerHistory(customer);
 
         creditEligibilityEvaluator.EvaluateRequestedAmount(requestedAmount, creditLimit);

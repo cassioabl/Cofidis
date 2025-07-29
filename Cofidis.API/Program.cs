@@ -1,10 +1,25 @@
 using Cofidis.Application.Services;
+using Cofidis.Domain.Exceptions;
 using Cofidis.Domain.Services;
+using Cofidis.Infra;
+using Cofidis.Infra.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<CofidisDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ServerConnection")));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<CreditApplicationService>();
+builder.Services.AddScoped<RiskIndexCalculator>();
+builder.Services.AddScoped<InterestRateCalculator>();
+builder.Services.AddScoped<LoanQuoteCalculator>();
+builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<CreditEligibilityEvaluator>();
+builder.Services.AddScoped<CreditLimitService>();
+builder.Services.AddScoped<CreditLimitRepository>();
 
 var app = builder.Build();
 
@@ -16,44 +31,54 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// app.MapGet("/simulation", (string customerTin) =>
-//     {
-//         var creditApplicationService = new CreditApplicationService(
-//             new RiskIndexCalculator(),
-//             new InterestRateCalculator(),
-//             new LoanQuoteCalculator(),
-//             new CustomerService(),
-//             new CreditEligibilityEvaluator(),
-//             new CreditLimitService()
-//         );
-//
-//         return Results.Ok(creditApplicationService.Evaluate(
-//             creditApplicationRequest.requestedAmount,
-//             creditApplicationRequest.termInMonths,
-//             creditApplicationRequest.customerTin));
-//     })
-//     .WithName("GetWeatherForecast")
-//     .WithOpenApi();
 
-app.MapPost("/application", (CreditApplicationRequest creditApplicationRequest) =>
+app.MapPost("/application", async (CreditApplicationService creditApplicationService, CreditApplicationRequest creditApplicationRequest) =>
     {
-        var creditApplicationService = new CreditApplicationService(
-            new RiskIndexCalculator(),
-            new InterestRateCalculator(),
-            new LoanQuoteCalculator(),
-            new CustomerService(),
-            new CreditEligibilityEvaluator(),
-            new CreditLimitService()
-        );
-
-        return Results.Ok(creditApplicationService.Evaluate(
-            creditApplicationRequest.requestedAmount,
-            creditApplicationRequest.termInMonths,
-            creditApplicationRequest.customerTin));
+        try
+        {
+            return Results.Ok(new
+            {
+                approved = true,
+                data = await creditApplicationService.Evaluate(
+                    creditApplicationRequest.RequestedAmount,
+                    creditApplicationRequest.TermInMonths,
+                    creditApplicationRequest.CustomerTin)
+            });
+        }
+        catch (CreditLimitExceededException ex)
+        {
+            return Results.BadRequest(new
+            {
+                approved = false,
+                error = ex.Message
+            });
+        }
+        catch (ExcessiveEffortException ex)
+        {
+            return Results.BadRequest(new
+            {
+                approved = false,
+                error = ex.Message
+            });
+        }
+        catch (CreditDeniedException ex)
+        {
+            return Results.BadRequest(new
+            {
+                approved = false,
+                error = ex.Message
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest(new
+            {
+                error = ex.Message
+            });
+        }
     })
-    .WithName("GetWeatherForecast")
     .WithOpenApi();
 
 app.Run();
 
-record CreditApplicationRequest(decimal requestedAmount, int termInMonths, string customerTin);
+record CreditApplicationRequest(decimal RequestedAmount, int TermInMonths, string CustomerTin);

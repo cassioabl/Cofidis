@@ -7,11 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Cofidis.Domain\Cofidis.Domain.csproj" />
+      <Compile Remove="Interfaces\**" />
+      <EmbeddedResource Remove="Interfaces\**" />
+      <None Remove="Interfaces\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Interfaces\" />
+      <ProjectReference Include="..\Cofidis.Domain\Cofidis.Domain.csproj" />
+      <ProjectReference Include="..\Cofidis.Infra\Cofidis.Infra.csproj" />
     </ItemGroup>
 
 </Project>

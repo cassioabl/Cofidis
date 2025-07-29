@@ -16,8 +16,8 @@ public record InflationRate : IRiskFactor
     {
         return Value switch
         {
-            > 5 => 2,
-            > 2 => 1,
+            > 0.05M => 2,
+            > 0.02M => 1,
             _ => 0
         };
     }

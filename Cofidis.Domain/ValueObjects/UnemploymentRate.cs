@@ -21,5 +21,4 @@ public record UnemploymentRate : IRiskFactor
             _ => 0
         };
     }
-
 }
