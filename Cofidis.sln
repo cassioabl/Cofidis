@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cofidis.API", "Cofidis.API\Cofidis.API.csproj", "{9EF51A0D-574F-4206-83A0-DA145CCDE342}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cofidis.Domain", "Cofidis.Domain\Cofidis.Domain.csproj", "{99D81992-BDD6-4346-A18E-A483C4BB5E81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cofidis.Application", "Cofidis.Application\Cofidis.Application.csproj", "{BFF280CD-1ED5-45D0-B2AD-36D71D0A9C01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9EF51A0D-574F-4206-83A0-DA145CCDE342}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EF51A0D-574F-4206-83A0-DA145CCDE342}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EF51A0D-574F-4206-83A0-DA145CCDE342}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EF51A0D-574F-4206-83A0-DA145CCDE342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99D81992-BDD6-4346-A18E-A483C4BB5E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99D81992-BDD6-4346-A18E-A483C4BB5E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99D81992-BDD6-4346-A18E-A483C4BB5E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99D81992-BDD6-4346-A18E-A483C4BB5E81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFF280CD-1ED5-45D0-B2AD-36D71D0A9C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFF280CD-1ED5-45D0-B2AD-36D71D0A9C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFF280CD-1ED5-45D0-B2AD-36D71D0A9C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFF280CD-1ED5-45D0-B2AD-36D71D0A9C01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
